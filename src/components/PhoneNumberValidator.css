@@ -1,0 +1,78 @@
+.phone-validator-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Alinea las secciones en la parte superior */
+  min-height: 100vh;
+  background-color: #f2f2f2; /* Color de fondo de la página */
+}
+
+.phone-input-section,
+.phone-details-section {
+  width: 50%; /* Establece el ancho de cada sección al 50% */
+  padding: 20px; /* Añade un espacio alrededor del contenido */
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.phone-input {
+  width: 100%;
+  height: 200px; /* Establece una altura para el textarea */
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc; /* Borde ligero */
+  border-radius: 5px;
+  resize: none; /* Evita que el usuario cambie el tamaño */
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: #ff0000;
+  margin-top: 0.5rem;
+}
+
+.phone-info {
+  margin-top: 2rem;
+}
+
+.phone-info table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.phone-info th,
+.phone-info td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+.phone-info th {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.valid {
+  background-color: #00b6ac;
+}
+
+.invalid {
+  background-color: #d42d7e;
+}
