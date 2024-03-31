@@ -1,13 +1,34 @@
-import { ChakraProvider } from "@chakra-ui/react";
-import { Analytics } from "@vercel/analytics/react"
+import {
+  ChakraProvider,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/react";
+import { Analytics } from "@vercel/analytics/react";
 
-import "./index.css"
+import "./index.css";
 import PhoneNumberValidator from "./components/PhoneNumberValidator";
+import CuitNumberValidator from "./components/CuitNumberValidator";
 
 const App = () => {
   return (
     <ChakraProvider>
-      <PhoneNumberValidator />
+      <Tabs>
+        <TabList>
+          <Tab>Teléfono</Tab>
+          <Tab>CUIT/CUIL</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <PhoneNumberValidator />
+          </TabPanel>
+          <TabPanel>
+            <CuitNumberValidator />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
       <Analytics />
     </ChakraProvider>
   );

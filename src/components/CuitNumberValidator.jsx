@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  getAreaCodeDetails,
-  isPhoneNumberValid,
-  splitPhoneNumber,
-} from "../utils/phoneNumber";
+import { isCuitValid, getCuitDetails } from "../utils/cuitNumber";
 import { Container, Divider, Heading, Stack } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { Button } from "@chakra-ui/button";
@@ -18,73 +14,70 @@ import {
   Tr,
 } from "@chakra-ui/table";
 import { FormControl } from "@chakra-ui/form-control";
+const CuitNumberValidator = () => {
+  const [cuitNumbers, setCuitNumbers] = useState([]);
+  const [cuitDetailsList, setCuitDetailsList] = useState([]);
 
-const PhoneNumberValidator = () => {
-  const [phoneNumbers, setPhoneNumbers] = useState([]);
-  const [phoneDetailsList, setPhoneDetailsList] = useState([]);
-
-  const handlePhoneChange = (event) => {
-    // Assuming phone numbers are separated by comma
+  const handleCuitNumberChange = (event) => {
+    // Assuming cuit numbers are separated by comma
     const numbers = event.target.value.split(/,/);
-    setPhoneNumbers(numbers);
+    setCuitNumbers(numbers);
   };
 
-  const handlePhoneSubmit = (event) => {
+  const handleCuitNumberSubmit = (event) => {
     event.preventDefault();
-    validatePhoneNumbers();
+    validateCuitNumbers();
   };
 
-  const handlePhoneClear = (event) => {
+  const handleCuitNumberClear = (event) => {
     event.preventDefault();
-    setPhoneNumbers([]);
-    setPhoneDetailsList([]);
+    setCuitNumbers([]);
+    setCuitDetailsList([]);
   };
 
-  const handleInvalidPhoneClear = (event) => {
+  const handleInvalidCuitNumberClear = (event) => {
     event.preventDefault();
-    setPhoneNumbers([]);
-    setPhoneDetailsList(phoneDetailsList.filter((p) => p.status === "VALID"));
+    setCuitNumbers([]);
+    setCuitDetailsList(cuitDetailsList.filter((p) => p.status === "VALID"));
   };
 
-  const validatePhoneNumbers = () => {
-    const updatedPhoneDetailsList = [];
+  const validateCuitNumbers = () => {
+    const updatedCuitDetailsList = [];
 
-    phoneNumbers.forEach((number) => {
-      if (isPhoneNumberValid(number)) {
-        const phoneInfo = splitPhoneNumber(number);
-        const areaInfo = getAreaCodeDetails(phoneInfo.areaCode);
-        updatedPhoneDetailsList.push({
-          phone: number,
-          ...phoneInfo,
-          ...areaInfo,
+    cuitNumbers.forEach((number) => {
+      if (isCuitValid(number)) {
+        const cuitInfo = getCuitDetails(number);
+        updatedCuitDetailsList.push({
+          cuit: number,
           status: "VALID",
+          ...cuitInfo,
         });
       } else if (!isNaN(number.replace(/-|\s/g, ""))) {
-        updatedPhoneDetailsList.push({ phone: number, status: "INVALID" });
+        updatedCuitDetailsList.push({ cuit: number, status: "INVALID" });
       }
     });
 
     const uniqueList = Array.from(
       new Set(
-        [...phoneDetailsList, ...updatedPhoneDetailsList].map(JSON.stringify)
+        [...cuitDetailsList, ...updatedCuitDetailsList].map(JSON.stringify)
       )
     ).map(JSON.parse);
 
-    setPhoneDetailsList(uniqueList);
+    setCuitDetailsList(uniqueList);
   };
 
   return (
     <Container maxWidth="container.xl" height="100vh">
       <Stack paddingY="8">
         <Heading as="h1" size="lg" fontFamily="Dm Sans" paddingX="1">
-          Validador de teléfonos argentinos
+          Validador de CUIT/CUIL
         </Heading>
         <FormControl>
           <Stack>
             <Textarea
-              placeholder="Ingresa número(s) de teléfono separados por coma"
-              value={phoneNumbers}
-              onChange={handlePhoneChange}
+              placeholder="Ingresa CUIT/CUIL separados por coma"
+              value={cuitNumbers}
+              onChange={handleCuitNumberChange}
             />
             <Stack
               direction="row"
@@ -98,7 +91,7 @@ const PhoneNumberValidator = () => {
                 type="submit"
                 colorScheme="teal"
                 leftIcon={<IoMdCheckmark />}
-                onClick={handlePhoneSubmit}
+                onClick={handleCuitNumberSubmit}
               >
                 Validar
               </Button>
@@ -107,7 +100,7 @@ const PhoneNumberValidator = () => {
                 colorScheme="teal"
                 variant="outline"
                 leftIcon={<IoMdTrash />}
-                onClick={handleInvalidPhoneClear}
+                onClick={handleInvalidCuitNumberClear}
               >
                 Limpiar inválidos
               </Button>
@@ -116,7 +109,7 @@ const PhoneNumberValidator = () => {
                 colorScheme="teal"
                 variant="outline"
                 leftIcon={<IoMdTrash />}
-                onClick={handlePhoneClear}
+                onClick={handleCuitNumberClear}
               >
                 Limpiar todos
               </Button>
@@ -128,28 +121,20 @@ const PhoneNumberValidator = () => {
           <Table variant="simple" width="100%" backgroundColor="white">
             <Thead>
               <Tr>
-                <Th>Teléfono</Th>
-                <Th>País</Th>
-                <Th>Área</Th>
-                <Th>Número</Th>
-                <Th>Provincias</Th>
-                <Th>Ciudades</Th>
+                <Th>CUIT/CUIL</Th>
+                <Th>Tipo</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {phoneDetailsList.map((phoneDetails, index) => (
+              {cuitDetailsList.map((cuitDetails, index) => (
                 <Tr
                   key={index}
                   background={
-                    phoneDetails.status === "VALID" ? "#DFEBE6" : "#FFE3F0"
+                    cuitDetails.status === "VALID" ? "#DFEBE6" : "#FFE3F0"
                   }
                 >
-                  <Td>{phoneDetails.phone}</Td>
-                  <Td>{phoneDetails.countryCode}</Td>
-                  <Td>{phoneDetails.areaCode}</Td>
-                  <Td>{phoneDetails.number}</Td>
-                  <Td>{(phoneDetails.provinces || []).join(", ")}</Td>
-                  <Td>{(phoneDetails.cities || []).join(", ")}</Td>
+                  <Td>{cuitDetails.cuit}</Td>
+                  <Td>{cuitDetails.type}</Td>
                 </Tr>
               ))}
             </Tbody>
@@ -160,4 +145,4 @@ const PhoneNumberValidator = () => {
   );
 };
 
-export default PhoneNumberValidator;
+export default CuitNumberValidator;
