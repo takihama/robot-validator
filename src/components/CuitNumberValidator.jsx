@@ -45,6 +45,7 @@ const CuitNumberValidator = () => {
     const updatedCuitDetailsList = [];
 
     cuitNumbers.forEach((number) => {
+      number = number.replace(/\s/g, "")
       if (isCuitValid(number)) {
         const cuitInfo = getCuitDetails(number);
         updatedCuitDetailsList.push({

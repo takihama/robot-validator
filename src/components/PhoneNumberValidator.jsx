@@ -50,6 +50,7 @@ const PhoneNumberValidator = () => {
     const updatedPhoneDetailsList = [];
 
     phoneNumbers.forEach((number) => {
+      number = number.replace(/\s/g, "")
       if (isPhoneNumberValid(number)) {
         const phoneInfo = splitPhoneNumber(number);
         const areaInfo = getAreaCodeDetails(phoneInfo.areaCode);
