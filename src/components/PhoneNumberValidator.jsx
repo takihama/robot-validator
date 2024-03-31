@@ -24,8 +24,8 @@ const PhoneNumberValidator = () => {
   const [phoneDetailsList, setPhoneDetailsList] = useState([]);
 
   const handlePhoneChange = (event) => {
-    // Assuming phone numbers are separated by comma or space
-    const numbers = event.target.value.split(/[\s,]+/);
+    // Assuming phone numbers are separated by comma
+    const numbers = event.target.value.split(/,/);
     setPhoneNumbers(numbers);
   };
 
@@ -83,7 +83,7 @@ const PhoneNumberValidator = () => {
           <Stack>
             <Textarea
               className="phone-input"
-              placeholder="Ingresa número(s) de teléfono separados por espacio o coma"
+              placeholder="Ingresa número(s) de teléfono separados por coma"
               value={phoneNumbers}
               onChange={handlePhoneChange}
             />
