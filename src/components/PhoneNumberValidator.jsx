@@ -91,10 +91,11 @@ const PhoneNumberValidator = () => {
               direction="row"
               spacing={4}
               width="100%"
-              justifyContent="right"
+              wrap="wrap"
+              justifyContent="center"
             >
               <Button
-                width="100%"
+                minW="300px"
                 type="submit"
                 colorScheme="teal"
                 leftIcon={<IoMdCheckmark />}
@@ -103,7 +104,7 @@ const PhoneNumberValidator = () => {
                 Validar
               </Button>
               <Button
-                width="100%"
+                minW="300px"
                 colorScheme="teal"
                 variant="outline"
                 leftIcon={<IoMdTrash />}
@@ -112,7 +113,7 @@ const PhoneNumberValidator = () => {
                 Limpiar inválidos
               </Button>
               <Button
-                width="100%"
+                minW="300px"
                 colorScheme="teal"
                 variant="outline"
                 leftIcon={<IoMdTrash />}
