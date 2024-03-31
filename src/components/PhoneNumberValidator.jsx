@@ -4,7 +4,7 @@ import {
   isPhoneNumberValid,
   splitPhoneNumber,
 } from "../utils/phoneNumber";
-import { Container, Heading, Stack } from "@chakra-ui/layout";
+import { Container, Divider, Heading, Stack } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { Button } from "@chakra-ui/button";
 import { IoMdCheckmark, IoMdTrash } from "react-icons/io";
@@ -40,6 +40,12 @@ const PhoneNumberValidator = () => {
     setPhoneDetailsList([]);
   };
 
+  const handleInvalidPhoneClear = (event) => {
+    event.preventDefault();
+    setPhoneNumbers([]);
+    setPhoneDetailsList(phoneDetailsList.filter((p) => p.status === "VALID"));
+  };
+
   const validatePhoneNumbers = () => {
     const updatedPhoneDetailsList = [];
 
@@ -53,7 +59,7 @@ const PhoneNumberValidator = () => {
           ...areaInfo,
           status: "VALID",
         });
-      } else if (!isNaN(number.replace(/-|\s/g,''))) {
+      } else if (!isNaN(number.replace(/-|\s/g, ""))) {
         updatedPhoneDetailsList.push({ phone: number, status: "INVALID" });
       }
     });
@@ -68,79 +74,88 @@ const PhoneNumberValidator = () => {
   };
 
   return (
-    <Container maxWidth="container.xl">
-      <Container maxWidth="container.xl" height="100vh">
-        <Stack paddingY="8" paddingX="4">
-          <Heading
-            as="h1"
-            size="lg"
-            noOfLines={1}
-            justifyContent="center"
-            fontFamily="Dm Sans"
-          >
-            Validador de teléfonos argentinos
-          </Heading>
-          <FormControl>
-            <Stack>
-              <Textarea
-                className="phone-input"
-                placeholder="Ingresa número(s) de teléfono separados por espacio o coma"
-                value={phoneNumbers}
-                onChange={handlePhoneChange}
-              />
-              <Stack direction="row" width="100%" justifyContent="right">
-                <Button
-                  type="submit"
-                  colorScheme="teal"
-                  leftIcon={<IoMdCheckmark />}
-                  onClick={handlePhoneSubmit}
-                >
-                  Validar
-                </Button>
-                <Button
-                  colorScheme="teal"
-                  variant="outline"
-                  leftIcon={<IoMdTrash />}
-                  onClick={handlePhoneClear}
-                >
-                  Limpiar
-                </Button>
-              </Stack>
+    <Container maxWidth="container.xl" height="100vh">
+      <Stack paddingY="8">
+        <Heading as="h1" size="lg" fontFamily="Dm Sans" paddingX="1">
+          Validador de teléfonos argentinos
+        </Heading>
+        <FormControl>
+          <Stack>
+            <Textarea
+              className="phone-input"
+              placeholder="Ingresa número(s) de teléfono separados por espacio o coma"
+              value={phoneNumbers}
+              onChange={handlePhoneChange}
+            />
+            <Stack
+              direction="row"
+              spacing={4}
+              width="100%"
+              justifyContent="right"
+            >
+              <Button
+                width="100%"
+                type="submit"
+                colorScheme="teal"
+                leftIcon={<IoMdCheckmark />}
+                onClick={handlePhoneSubmit}
+              >
+                Validar
+              </Button>
+              <Button
+                width="100%"
+                colorScheme="teal"
+                variant="outline"
+                leftIcon={<IoMdTrash />}
+                onClick={handleInvalidPhoneClear}
+              >
+                Limpiar inválidos
+              </Button>
+              <Button
+                width="100%"
+                colorScheme="teal"
+                variant="outline"
+                leftIcon={<IoMdTrash />}
+                onClick={handlePhoneClear}
+              >
+                Limpiar todos
+              </Button>
             </Stack>
-          </FormControl>
-          <TableContainer justifyContent="center" paddingY="8">
-            <Table variant="simple" width="100%" backgroundColor="white">
-              <Thead>
-                <Tr>
-                  <Th>Teléfono</Th>
-                  <Th>País</Th>
-                  <Th>Área</Th>
-                  <Th>Número</Th>
-                  <Th>Provincias</Th>
-                  <Th>Ciudades</Th>
+          </Stack>
+        </FormControl>
+        <Divider paddingY="4" />
+        <TableContainer justifyContent="center">
+          <Table variant="simple" width="100%" backgroundColor="white">
+            <Thead>
+              <Tr>
+                <Th>Teléfono</Th>
+                <Th>País</Th>
+                <Th>Área</Th>
+                <Th>Número</Th>
+                <Th>Provincias</Th>
+                <Th>Ciudades</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {phoneDetailsList.map((phoneDetails, index) => (
+                <Tr
+                  key={index}
+                  background={
+                    phoneDetails.status === "VALID" ? "#DFEBE6" : "#FFE3F0"
+                  }
+                >
+                  <Td>{phoneDetails.phone}</Td>
+                  <Td>{phoneDetails.countryCode}</Td>
+                  <Td>{phoneDetails.areaCode}</Td>
+                  <Td>{phoneDetails.number}</Td>
+                  <Td>{(phoneDetails.provinces || []).join(", ")}</Td>
+                  <Td>{(phoneDetails.cities || []).join(", ")}</Td>
                 </Tr>
-              </Thead>
-              <Tbody>
-                {phoneDetailsList.map((phoneDetails, index) => (
-                  <Tr
-                    key={index}
-                    background={
-                      phoneDetails.status === "VALID" ? "#5cb85c" : "#e57373"
-                    }
-                  >
-                    <Td>{phoneDetails.phone}</Td>
-                    <Td>{phoneDetails.countryCode}</Td>
-                    <Td>{phoneDetails.areaCode}</Td>
-                    <Td>{phoneDetails.number}</Td>
-                    <Td>{(phoneDetails.provinces || []).join(", ")}</Td>
-                    <Td>{(phoneDetails.cities || []).join(", ")}</Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </Stack>
-      </Container>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Stack>
     </Container>
   );
 };
