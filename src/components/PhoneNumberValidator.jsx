@@ -18,10 +18,17 @@ import {
   Tr,
 } from "@chakra-ui/table";
 import { FormControl } from "@chakra-ui/form-control";
+import { csvFileToArray } from "../utils/csvFileToArray";
+import InputFile from "./atomic/InputFile";
 
 const PhoneNumberValidator = () => {
   const [phoneNumbers, setPhoneNumbers] = useState([]);
   const [phoneDetailsList, setPhoneDetailsList] = useState([]);
+
+  const handlePhoneFileChange = async (event) => {
+    const phones = await csvFileToArray(event.target.files[0]);
+    validatePhoneNumbers(phones);
+  };
 
   const handlePhoneChange = (event) => {
     // Assuming phone numbers are separated by comma
@@ -46,11 +53,10 @@ const PhoneNumberValidator = () => {
     setPhoneDetailsList(phoneDetailsList.filter((p) => p.status === "VALID"));
   };
 
-  const validatePhoneNumbers = () => {
+  const validatePhoneNumbers = (phones) => {
     const updatedPhoneDetailsList = [];
 
-    phoneNumbers.forEach((number) => {
-      number = number.replace(/\s/g, "")
+    (phones || phoneNumbers).forEach((number) => {
       if (isPhoneNumberValid(number)) {
         const phoneInfo = splitPhoneNumber(number);
         const areaInfo = getAreaCodeDetails(phoneInfo.areaCode);
@@ -82,11 +88,13 @@ const PhoneNumberValidator = () => {
         </Heading>
         <FormControl>
           <Stack>
-            <Textarea
-              placeholder="Ingresa número(s) de teléfono separados por coma"
-              value={phoneNumbers}
-              onChange={handlePhoneChange}
-            />
+            <Stack>
+              <Textarea
+                placeholder="Ingresa número(s) de teléfono separados por coma"
+                value={phoneNumbers}
+                onChange={handlePhoneChange}
+              />
+            </Stack>
             <Stack
               direction="row"
               spacing={4}
@@ -96,13 +104,13 @@ const PhoneNumberValidator = () => {
             >
               <Button
                 minW="300px"
-                type="submit"
                 colorScheme="teal"
                 leftIcon={<IoMdCheckmark />}
                 onClick={handlePhoneSubmit}
               >
                 Validar
               </Button>
+              <InputFile handleInputFile={handlePhoneFileChange} />
               <Button
                 minW="300px"
                 colorScheme="teal"
