@@ -108,7 +108,7 @@ const CuitNumberValidator = () => {
               <InputFile handleInputFile={handleCuitFileChange} />
               <Button
                 minW="300px"
-                colorScheme="teal"
+                colorScheme="red"
                 variant="outline"
                 leftIcon={<IoMdTrash />}
                 onClick={handleInvalidCuitNumberClear}
@@ -117,7 +117,7 @@ const CuitNumberValidator = () => {
               </Button>
               <Button
                 minW="300px"
-                colorScheme="teal"
+                colorScheme="red"
                 variant="outline"
                 leftIcon={<IoMdTrash />}
                 onClick={handleCuitNumberClear}

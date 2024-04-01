@@ -114,7 +114,7 @@ const PhoneNumberValidator = () => {
               <InputFile handleInputFile={handlePhoneFileChange} />
               <Button
                 minW="300px"
-                colorScheme="teal"
+                colorScheme="red"
                 variant="outline"
                 leftIcon={<IoMdTrash />}
                 onClick={handleInvalidPhoneClear}
@@ -123,7 +123,7 @@ const PhoneNumberValidator = () => {
               </Button>
               <Button
                 minW="300px"
-                colorScheme="teal"
+                colorScheme="red"
                 variant="outline"
                 leftIcon={<IoMdTrash />}
                 onClick={handlePhoneClear}
