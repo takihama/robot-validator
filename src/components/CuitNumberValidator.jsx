@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { isCuitValid, getCuitDetails } from "../utils/cuitNumber";
 import { Container, Divider, Heading, Stack } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { Button } from "@chakra-ui/button";
-import { IoMdCheckmark, IoMdTrash } from "react-icons/io";
 import {
   Table,
   TableContainer,
@@ -14,9 +12,20 @@ import {
   Tr,
 } from "@chakra-ui/table";
 import { FormControl } from "@chakra-ui/form-control";
+import { IoMdCheckmark, IoMdTrash } from "react-icons/io";
+
+import { isCuitValid, getCuitDetails } from "../utils/cuitNumber";
+import { csvFileToArray } from "../utils/csvFile";
+import InputFile from "./atomic/InputFile";
+
 const CuitNumberValidator = () => {
   const [cuitNumbers, setCuitNumbers] = useState([]);
   const [cuitDetailsList, setCuitDetailsList] = useState([]);
+
+  const handleCuitFileChange = async (event) => {
+    const cuits = await csvFileToArray(event.target.files[0]);
+    validateCuitNumbers(cuits);
+  };
 
   const handleCuitNumberChange = (event) => {
     // Assuming cuit numbers are separated by comma
@@ -41,11 +50,11 @@ const CuitNumberValidator = () => {
     setCuitDetailsList(cuitDetailsList.filter((p) => p.status === "VALID"));
   };
 
-  const validateCuitNumbers = () => {
+  const validateCuitNumbers = (cuits) => {
     const updatedCuitDetailsList = [];
 
-    cuitNumbers.forEach((number) => {
-      number = number.replace(/\s/g, "")
+    (cuits || cuitNumbers).forEach((number) => {
+      number = number.replace(/\s/g, "");
       if (isCuitValid(number)) {
         const cuitInfo = getCuitDetails(number);
         updatedCuitDetailsList.push({
@@ -96,6 +105,7 @@ const CuitNumberValidator = () => {
               >
                 Validar
               </Button>
+              <InputFile handleInputFile={handleCuitFileChange} />
               <Button
                 minW="300px"
                 colorScheme="teal"

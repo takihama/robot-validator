@@ -1,13 +1,7 @@
 import { useState } from "react";
-import {
-  getAreaCodeDetails,
-  isPhoneNumberValid,
-  splitPhoneNumber,
-} from "../utils/phoneNumber";
 import { Container, Divider, Heading, Stack } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { Button } from "@chakra-ui/button";
-import { IoMdCheckmark, IoMdTrash } from "react-icons/io";
 import {
   Table,
   TableContainer,
@@ -18,7 +12,14 @@ import {
   Tr,
 } from "@chakra-ui/table";
 import { FormControl } from "@chakra-ui/form-control";
-import { csvFileToArray } from "../utils/csvFileToArray";
+import { IoMdCheckmark, IoMdTrash } from "react-icons/io";
+
+import {
+  getAreaCodeDetails,
+  isPhoneNumberValid,
+  splitPhoneNumber,
+} from "../utils/phoneNumber";
+import { csvFileToArray } from "../utils/csvFile";
 import InputFile from "./atomic/InputFile";
 
 const PhoneNumberValidator = () => {
